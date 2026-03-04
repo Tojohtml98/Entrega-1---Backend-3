@@ -77,7 +77,7 @@ Asegurate de tener una instancia de MongoDB disponible o configurar `MONGODB_URI
 Desde la raíz del proyecto:
 
 ```bash
-docker build -t TU_USUARIO_DOCKER/entrega-backend3:latest .
+docker build -t tojohtml98/entrega-backend3:latest .
 ```
 
 ### Ejecutar el contenedor
@@ -85,14 +85,14 @@ docker build -t TU_USUARIO_DOCKER/entrega-backend3:latest .
 ```bash
 docker run -p 8080:8080 \
   -e MONGODB_URI="mongodb://host.docker.internal:27017/entrega1" \
-  TU_USUARIO_DOCKER/entrega-backend3:latest
+  tojohtml98/entrega-backend3:latest
 ```
 
 La API quedará disponible en `http://localhost:8080`.
 
 ### Imagen en Dockerhub
 
-Cuando publiques la imagen en Dockerhub, actualizá este enlace con la URL real:
+Imagen disponible en DockerHub:
 
-- Link a la imagen en Dockerhub: `https://hub.docker.com/r/TU_USUARIO_DOCKER/entrega-backend3`
+- `https://hub.docker.com/r/tojohtml98/entrega-backend3`
 
