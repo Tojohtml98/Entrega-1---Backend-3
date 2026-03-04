@@ -51,3 +51,48 @@ curl http://localhost:8080/api/users
 # Ver mascotas insertadas
 curl http://localhost:8080/api/pets
 ```
+
+## Documentación Swagger
+
+La documentación de la API está disponible en:
+
+- `http://localhost:8080/api/docs`
+
+Ahí podés explorar los endpoints de `Users` y probar las peticiones.
+
+## Tests funcionales
+
+Se utilizan **Jest** y **Supertest** para los tests funcionales del router de adopciones.
+
+```bash
+npm test
+```
+
+Asegurate de tener una instancia de MongoDB disponible o configurar `MONGODB_URI_TEST` si querés que los tests se conecten a otra base.
+
+## Docker
+
+### Construir la imagen
+
+Desde la raíz del proyecto:
+
+```bash
+docker build -t TU_USUARIO_DOCKER/entrega-backend3:latest .
+```
+
+### Ejecutar el contenedor
+
+```bash
+docker run -p 8080:8080 \
+  -e MONGODB_URI="mongodb://host.docker.internal:27017/entrega1" \
+  TU_USUARIO_DOCKER/entrega-backend3:latest
+```
+
+La API quedará disponible en `http://localhost:8080`.
+
+### Imagen en Dockerhub
+
+Cuando publiques la imagen en Dockerhub, actualizá este enlace con la URL real:
+
+- Link a la imagen en Dockerhub: `https://hub.docker.com/r/TU_USUARIO_DOCKER/entrega-backend3`
+
