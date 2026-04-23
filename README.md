@@ -1,98 +1,111 @@
-# Entrega N°1 - Backend 3
+# 🚀 Backend API - Node.js / Express / MongoDB
 
-Router Mocks, generación de usuarios/mascotas mock y endpoint para insertar datos en la base de datos.
+REST API built with Node.js, Express and MongoDB, focused on backend fundamentals, clean architecture and real-world practices.
 
-## Requisitos
+---
+
+## 🚀 Live Demo
+
+Swagger docs:
+<http://localhost:8080/api/docs>
+
+---
+
+## ✨ Features
+
+- Full CRUD operations (Users & Pets)
+- Data generation and seeding (mock users/pets)
+- MongoDB integration using Mongoose
+- Data validation with Joi
+- Error handling using middleware
+- API documentation with Swagger
+- Functional testing with Jest & Supertest
+- Dockerized application
+
+---
+
+## 🧱 Architecture
+
+- Controllers → handle request/response
+- Services → business logic
+- Models → MongoDB schemas
+- Routes → API endpoints
+- Utils → reusable helpers
+
+---
+
+## 🧠 What I demonstrate in this project
+
+- REST API design
+- Clean architecture (layer separation)
+- Data validation with Joi
+- Error handling middleware
+- MongoDB integration (Mongoose)
+- Testing with Jest & Supertest
+- API documentation with Swagger
+- Docker containerization
+
+---
+
+## 🛠 Tech Stack
 
 - Node.js
-- MongoDB (local o URI en variable de entorno)
-- Variables opcionales: `PORT`, `MONGODB_URI` (archivo `.env`)
+- Express
+- MongoDB / Mongoose
+- Joi
+- Jest / Supertest
+- Swagger
+- Docker
 
-## Instalación
+---
+
+## ⚙️ Installation
 
 ```bash
 npm install
 ```
 
-## Ejecución
+---
+
+## ▶️ Run
 
 ```bash
 npm run dev
 ```
 
-Por defecto el servidor corre en `http://localhost:8080`.
+Server runs on:
+<http://localhost:8080>
 
-## Endpoints - Router Mocks (`/api/mocks`)
+---
 
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/mocks/mockingpets` | Devuelve mascotas mock (sin guardar en BD). Query opcional: `?quantity=20` (máx. 100). |
-| GET | `/api/mocks/mockingusers` | Genera 50 usuarios mock con password "coder123" encriptada, role user/admin y pets []. Formato tipo Mongo. |
-| POST | `/api/mocks/generateData` | Genera e inserta en la BD. Body: `{ "users": number, "pets": number }`. |
+## 📡 API Endpoints (Mocks)
 
-## Verificación de datos insertados
+| Method | Route | Description |
+| ------ | ------ | ------------- |
+| GET | /api/mocks/mockingpets | Returns mock pets |
+| GET | /api/mocks/mockingusers | Returns mock users |
+| POST | /api/mocks/generateData | Inserts mock data into DB |
 
-Después de llamar a `POST /api/mocks/generateData`:
+---
 
-- **Usuarios:** `GET /api/users` — listado; `GET /api/users/:uid` — por ID.
-- **Mascotas:** `GET /api/pets` — listado; `GET /api/pets/:pid` — por ID.
-
-## Ejemplo de uso
-
-```bash
-# Generar 5 usuarios y 10 mascotas en la BD
-curl -X POST http://localhost:8080/api/mocks/generateData \
-  -H "Content-Type: application/json" \
-  -d '{"users": 5, "pets": 10}'
-
-# Ver usuarios insertados
-curl http://localhost:8080/api/users
-
-# Ver mascotas insertadas
-curl http://localhost:8080/api/pets
-```
-
-## Documentación Swagger
-
-La documentación de la API está disponible en:
-
-- `http://localhost:8080/api/docs`
-
-Ahí podés explorar los endpoints de `Users` y probar las peticiones.
-
-## Tests funcionales
-
-Se utilizan **Jest** y **Supertest** para los tests funcionales del router de adopciones.
+## 🧪 Testing
 
 ```bash
 npm test
 ```
 
-Asegurate de tener una instancia de MongoDB disponible o configurar `MONGODB_URI_TEST` si querés que los tests se conecten a otra base.
+---
 
-## Docker
-
-### Construir la imagen
-
-Desde la raíz del proyecto:
+## 🐳 Docker
 
 ```bash
-docker build -t tojohtml98/entrega-backend3:latest .
+docker build -t backend-api .
+docker run -p 8080:8080 backend-api
 ```
 
-### Ejecutar el contenedor
+---
 
-```bash
-docker run -p 8080:8080 \
-  -e MONGODB_URI="mongodb://host.docker.internal:27017/entrega1" \
-  tojohtml98/entrega-backend3:latest
-```
+## 📌 Author
 
-La API quedará disponible en `http://localhost:8080`.
-
-### Imagen en Dockerhub
-
-Imagen disponible en DockerHub:
-
-- `https://hub.docker.com/r/tojohtml98/entrega-backend3`
-
+Tomás Orella
+Full Stack Developer (Backend-focused)
