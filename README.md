@@ -3,11 +3,11 @@
 REST API built with Node.js, Express and MongoDB, focused on backend fundamentals, clean architecture and real-world practices.
 
 ---
+## 🚀 Live API
 
-## 🚀 Live Demo
+🔗 https://entrega-1-backend-3-ea9e.onrender.com/api/docs
 
-Swagger docs:
-`https://<tu-servicio>.onrender.com/api/docs`
+> Fully deployed REST API with Swagger documentation available in production.
 
 ---
 
