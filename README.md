@@ -7,7 +7,7 @@ REST API built with Node.js, Express and MongoDB, focused on backend fundamental
 ## 🚀 Live Demo
 
 Swagger docs:
-<http://localhost:8080/api/docs>
+`https://<tu-servicio>.onrender.com/api/docs`
 
 ---
 
@@ -63,6 +63,7 @@ Swagger docs:
 
 ```bash
 npm install
+cp .env.example .env
 ```
 
 ---
@@ -70,11 +71,11 @@ npm install
 ## ▶️ Run
 
 ```bash
-npm run dev
+npm start
 ```
 
 Server runs on:
-<http://localhost:8080>
+`http://localhost:8080`
 
 ---
 

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: entrega-1-backend-3
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PUBLIC_BASE_URL
+        value: https://entrega-1-backend-3.onrender.com
+      - key: MONGO_URI
+        sync: false

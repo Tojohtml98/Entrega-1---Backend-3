@@ -1,4 +1,10 @@
 const swaggerJsdoc = require('swagger-jsdoc');
+const path = require('path');
+const port = process.env.PORT || 8080;
+const publicBaseUrl =
+  process.env.RENDER_EXTERNAL_URL ||
+  process.env.PUBLIC_BASE_URL ||
+  `http://localhost:${port}`;
 
 const options = {
   definition: {
@@ -10,12 +16,12 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:8080',
+        url: publicBaseUrl,
       },
     ],
   },
   apis: [
-    './src/routes/users.router.js',
+    path.join(__dirname, '../routes/*.router.js'),
   ],
 };
 
