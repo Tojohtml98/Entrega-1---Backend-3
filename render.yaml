@@ -1,15 +1,18 @@
 services:
   - type: web
-    name: entrega-1-backend-3
+    name: scalable-backend-api
     runtime: node
     plan: free
-    buildCommand: npm install
+    region: oregon
+    branch: main
+    buildCommand: npm install --omit=dev
     startCommand: npm start
     autoDeploy: true
+    healthCheckPath: /api/docs
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PUBLIC_BASE_URL
-        value: https://entrega-1-backend-3.onrender.com
+      - key: NODE_VERSION
+        value: 20
       - key: MONGO_URI
         sync: false
