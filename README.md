@@ -24,9 +24,11 @@
 
 ## Overview
 
-A backend service designed to handle **users**, **pets** and **adoptions** with a focus on the engineering practices that matter past a tutorial: clear layer separation, deterministic seed data, runtime validation, integration tests, and an always-on hosted environment that recruiters can hit in one click.
+A backend service designed to handle **users**, **pets** and **adoptions** with a focus on the engineering practices that matter past a tutorial: clear layer separation, deterministic seed data, integration tests, and an always-on hosted environment that recruiters can hit in one click.
 
 It is intentionally small in surface area and deep in craft — the value is **how** each piece is built, not how many endpoints it ships.
+
+If Render está suspendido o dormido, reactivá el servicio en el [dashboard](https://dashboard.render.com). Guía: [docs/RENDER.md](./docs/RENDER.md).
 
 ---
 
@@ -34,35 +36,35 @@ It is intentionally small in surface area and deep in craft — the value is **h
 
 - **Runtime** — Node.js 20, Express 4
 - **Database** — MongoDB (Mongoose ODM) hosted on MongoDB Atlas
-- **Validation** — Joi schemas at the route boundary
 - **Documentation** — OpenAPI 3 via `swagger-jsdoc` + `swagger-ui-express`
 - **Testing** — Jest + Supertest, in-band run for deterministic suites
-- **Containerization** — Docker, multi-stage friendly
-- **Mocking** — `faker` for deterministic seeding of users/pets
+- **Containerization** — Docker
+- **Mocking** — `faker` for seeding users/pets
+- **Hosting** — Render (`render.yaml`)
 
 ---
 
 ## Architecture
 
 ```
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│   Routes     │ ─▶ │ Controllers  │ ─▶ │   Services   │ ─▶ │    Models    │
-│  (Express)   │    │  (HTTP I/O)  │    │  (business)  │    │  (Mongoose)  │
-└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
-                            ▲                  │
-                            │                  ▼
-                       Joi validation     MongoDB Atlas
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│   Routes     │ ─▶ │   Services   │ ─▶ │    Models    │
+│  (Express)   │    │  (business)  │    │  (Mongoose)  │
+└──────────────┘    └──────────────┘    └──────────────┘
+                            │
+                            ▼
+                      MongoDB Atlas
 ```
 
-Each request crosses **one boundary at a time**: HTTP concerns stay in controllers, domain rules in services, persistence in models. This keeps the test surface small (services are pure given a mocked model) and makes the API easy to extend without rewriting the call graph.
+Routes stay thin; business rules live in services; persistence in models.
 
 ---
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/Tojohtml98/Scalable-Backend-API.git
-cd Scalable-Backend-API
+git clone https://github.com/Tojohtml98/Entrega-1---Backend-3.git
+cd Entrega-1---Backend-3-main
 npm install
 cp .env.example .env   # fill MONGO_URI
 npm start              # production
@@ -83,22 +85,18 @@ Interactive docs (Swagger UI): **https://scalable-backend-api.onrender.com/api/d
 | GET    | `/api/users`                   | List users                           |
 | GET    | `/api/users/:uid`              | Get user by id                       |
 | GET    | `/api/pets`                    | List pets                            |
-| POST   | `/api/pets`                    | Create pet                           |
+| GET    | `/api/pets/:pid`               | Get pet by id                        |
 | POST   | `/api/adoption/:uid/:pid`      | Adopt pet `pid` for user `uid`       |
-| GET    | `/api/mocks/mockingusers`      | Generate N mock users (no insert)    |
-| GET    | `/api/mocks/mockingpets`       | Generate N mock pets (no insert)     |
+| GET    | `/api/adoption/:uid`           | User with adopted pets               |
+| GET    | `/api/mocks/mockingusers`      | Generate mock users (no insert)      |
+| GET    | `/api/mocks/mockingpets`       | Generate mock pets (no insert)       |
 | POST   | `/api/mocks/generateData`      | Seed users + pets into the database  |
 
 ### Try it (cURL)
 
 ```bash
-# Liveness
 curl https://scalable-backend-api.onrender.com/health
-
-# Generate 10 mock users (no DB write — useful for fixtures)
 curl https://scalable-backend-api.onrender.com/api/mocks/mockingusers
-
-# Seed the DB with deterministic data
 curl -X POST https://scalable-backend-api.onrender.com/api/mocks/generateData \
   -H "Content-Type: application/json" \
   -d '{"users": 50, "pets": 100}'
@@ -113,6 +111,7 @@ curl -X POST https://scalable-backend-api.onrender.com/api/mocks/generateData \
 | `MONGO_URI`    | Yes      | MongoDB connection string                     |
 | `PORT`         | No       | HTTP port (default `8080`)                    |
 | `NODE_ENV`     | No       | `development` \| `production`                 |
+| `PUBLIC_BASE_URL` | No    | Swagger server URL (Render sets automatically) |
 
 See `.env.example` for the template.
 
@@ -124,7 +123,11 @@ See `.env.example` for the template.
 npm test
 ```
 
-Jest runs functional tests against Express via Supertest with `--runInBand` to keep DB state deterministic. Tests live in `tests/` and exercise the public HTTP surface, not the internals — refactors don't break the suite.
+With MongoDB on `127.0.0.1:27017`, adoption tests run against `entrega1_test`. Without Mongo, tests skip with a warning (suite still passes).
+
+```bash
+MONGODB_URI_TEST=mongodb://127.0.0.1:27017/mi_test npm test
+```
 
 ---
 
@@ -139,20 +142,16 @@ docker run -p 8080:8080 --env-file .env scalable-backend-api
 
 ## Deployment
 
-- **Host:** Render (free tier) · `render.yaml` blueprint at repo root
+- **Host:** Render (free tier) · `render.yaml` at repo root
+- **Service:** `scalable-backend-api` → https://scalable-backend-api.onrender.com
 - **CD:** Auto-deploy on push to `main`
-- **DB:** MongoDB Atlas (M0 cluster, separate database per project)
-- **Cold start:** ~25s on first hit after idle (free tier limitation)
+- **Details:** [docs/RENDER.md](./docs/RENDER.md)
 
 ---
 
-## Design Decisions
+## Development (Cursor + iTerm2 + Claude Code)
 
-- **Why layers and not a flat structure?** Past 10 endpoints, flat routes turn into 800-line files with tangled responsibilities. Layered code costs little upfront and keeps both growth and testing cheap.
-- **Why Joi at the boundary instead of inside services?** Services should trust their inputs. Validation lives where the trust boundary actually is — the HTTP edge.
-- **Why Swagger over hand-written docs?** Schemas live next to the route definitions, so drift between code and docs is structurally hard. Recruiters get an interactive playground for free.
-- **Why deterministic mocks with `faker`?** Seeding with a fixed seed produces the same fixtures every run, making integration tests reproducible across machines and CI.
-- **Why Docker even on a small API?** Containerization is the lowest-cost insurance against "works on my machine" — and the image is a portable artifact for any cloud later.
+Multi-tool workflow: [docs/WORKFLOW.md](./docs/WORKFLOW.md)
 
 ---
 

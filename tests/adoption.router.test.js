@@ -4,22 +4,20 @@ const app = require('../src/app');
 const User = require('../src/models/User');
 const Pet = require('../src/models/Pet');
 
-const TEST_DB_URI = process.env.MONGODB_URI_TEST || 'mongodb://localhost:27017/entrega1_test';
+const TEST_DB_URI = process.env.MONGODB_URI_TEST || 'mongodb://127.0.0.1:27017/entrega1_test';
 
-const dbAvailable = () =>
-  mongoose
-    .connect(TEST_DB_URI, { serverSelectionTimeoutMS: 1000 })
-    .then(() => true)
-    .catch(() => false);
+const mongoConnected = () => mongoose.connection.readyState === 1;
 
 beforeAll(async () => {
-  if (!(await dbAvailable())) {
+  try {
+    await mongoose.connect(TEST_DB_URI, { serverSelectionTimeoutMS: 2000 });
+  } catch {
     console.warn('MongoDB no está disponible; las pruebas de adopción se omiten.');
   }
 });
 
 beforeEach(async () => {
-  if (mongoose.connection.readyState !== 1) {
+  if (!mongoConnected()) {
     return;
   }
   await User.deleteMany({});
@@ -34,7 +32,7 @@ afterAll(async () => {
 
 describe('Adoption router', () => {
   test('POST /api/adoption/:uid/:pid registra una adopción correctamente', async () => {
-    if (mongoose.connection.readyState !== 1) {
+    if (!mongoConnected()) {
       return;
     }
 
@@ -70,7 +68,7 @@ describe('Adoption router', () => {
   });
 
   test('POST /api/adoption/:uid/:pid devuelve 404 si el usuario no existe', async () => {
-    if (mongoose.connection.readyState !== 1) {
+    if (!mongoConnected()) {
       return;
     }
 
@@ -92,7 +90,7 @@ describe('Adoption router', () => {
   });
 
   test('POST /api/adoption/:uid/:pid devuelve 404 si la mascota no existe', async () => {
-    if (mongoose.connection.readyState !== 1) {
+    if (!mongoConnected()) {
       return;
     }
 
@@ -115,7 +113,7 @@ describe('Adoption router', () => {
   });
 
   test('POST /api/adoption/:uid/:pid devuelve 400 si la mascota ya está adoptada', async () => {
-    if (mongoose.connection.readyState !== 1) {
+    if (!mongoConnected()) {
       return;
     }
 
@@ -143,7 +141,7 @@ describe('Adoption router', () => {
   });
 
   test('GET /api/adoption/:uid devuelve usuario con sus mascotas', async () => {
-    if (mongoose.connection.readyState !== 1) {
+    if (!mongoConnected()) {
       return;
     }
 
@@ -180,7 +178,7 @@ describe('Adoption router', () => {
   });
 
   test('GET /api/adoption/:uid devuelve 404 si el usuario no existe', async () => {
-    if (mongoose.connection.readyState !== 1) {
+    if (!mongoConnected()) {
       return;
     }
 
