@@ -19,7 +19,7 @@ Este proyecto se puede editar desde tres sitios a la vez. Todos leen y escriben 
 ## Comandos habituales (iTerm2)
 
 ```bash
-cd ~/Entrega-1---Backend-3-main
+cd ~/Entrega-1---Backend-3-main   # o Scalable-Backend-API si clonaste de nuevo
 npm install
 cp .env.example .env   # editá MONGO_URI
 npm run dev
