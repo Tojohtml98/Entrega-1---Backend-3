@@ -11,6 +11,7 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/Tojohtml98/Scalable-Backend-API/actions/workflows/ci.yml"><img src="https://github.com/Tojohtml98/Scalable-Backend-API/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <img src="https://img.shields.io/badge/Node.js-20-339933?logo=node.js&logoColor=white" alt="Node 20" />
   <img src="https://img.shields.io/badge/Express-4-000000?logo=express&logoColor=white" alt="Express" />
   <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb&logoColor=white" alt="MongoDB" />
