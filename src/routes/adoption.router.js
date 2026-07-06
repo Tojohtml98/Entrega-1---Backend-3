@@ -46,7 +46,7 @@ router.post('/:uid/:pid', async (req, res, next) => {
 router.get('/:uid', async (req, res, next) => {
   try {
     const { uid } = req.params;
-    const user = await User.findById(uid).populate('pets').lean();
+    const user = await User.findById(uid).populate('pets');
 
     if (!user) {
       return res.status(404).json({ status: 'error', message: 'Usuario no encontrado' });
