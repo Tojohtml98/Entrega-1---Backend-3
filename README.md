@@ -29,7 +29,7 @@ A backend service designed to handle **users**, **pets** and **adoptions** with 
 
 It is intentionally small in surface area and deep in craft — the value is **how** each piece is built, not how many endpoints it ships.
 
-If Render está suspendido o dormido, reactivá el servicio en el [dashboard](https://dashboard.render.com). Guía: [docs/RENDER.md](./docs/RENDER.md).
+If the Render service is asleep or suspended, wake it from the [dashboard](https://dashboard.render.com). Details: [docs/RENDER.md](./docs/RENDER.md).
 
 ---
 
@@ -64,8 +64,8 @@ Routes stay thin; business rules live in services; persistence in models.
 ## Quick Start
 
 ```bash
-git clone https://github.com/Tojohtml98/Entrega-1---Backend-3.git
-cd Entrega-1---Backend-3-main
+git clone https://github.com/Tojohtml98/Scalable-Backend-API.git
+cd Scalable-Backend-API
 npm install
 cp .env.example .env   # fill MONGO_URI
 npm start              # production
